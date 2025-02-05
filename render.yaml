@@ -2,7 +2,7 @@ services:
   - type: static
     name: aspira-webapp
     env: static
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && rm -rf dist node_modules/.vite && npm install && npm run build
     staticPublishPath: frontend/dist
     routes:
       - type: rewrite
