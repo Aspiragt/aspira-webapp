@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -8,7 +9,13 @@ import {
   Button,
   VStack,
   Heading,
-  useDisclosure
+  useDisclosure,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useToast,
+  Stack,
+  HStack
 } from '@chakra-ui/react';
 import BookingModal from '../components/BookingModal';
 import config from '../config';
@@ -79,7 +86,10 @@ function CategoryCard({ category }) {
 function Home() {
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const [giftCode, setGiftCode] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const toast = useToast();
 
   React.useEffect(() => {
     fetchExperiences();
@@ -100,44 +110,70 @@ function Home() {
     onOpen();
   };
 
+  const handleRedeemCode = () => {
+    if (!giftCode.trim()) {
+      toast({
+        title: 'Error',
+        description: 'Por favor ingresa un código de regalo',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
+    }
+    navigate(`/redeem/${giftCode.trim()}`);
+  };
+
   return (
     <Box>
       {/* Hero Section */}
-      <Box
-        bgImage="url('https://placehold.co/2000x800/teal/white?text=Descubre+Guatemala')"
-        bgPosition="center"
-        bgSize="cover"
-        h="70vh"
-        position="relative"
-      >
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          bg="rgba(0, 0, 0, 0.5)"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <VStack spacing={6} textAlign="center" color="white">
+      <Box bg="teal.500" color="white" py={16}>
+        <Container maxW="container.xl">
+          <VStack spacing={6} align="center" textAlign="center">
             <Heading size="2xl">
-              Descubre Guatemala
+              Descubre Experiencias Únicas en Guatemala
             </Heading>
-            <Text fontSize="xl" maxW="2xl">
-              Experiencias únicas que transforman tu manera de viajar
+            <Text fontSize="xl" maxW="container.md">
+              Regala momentos inolvidables con experiencias auténticas y personalizadas
             </Text>
-            <Button
-              as={RouterLink}
-              to="/experiences"
-              size="lg"
-              colorScheme="teal"
+            
+            {/* Redimir código section */}
+            <Box 
+              bg="white" 
+              p={6} 
+              borderRadius="lg" 
+              boxShadow="md" 
+              width="100%" 
+              maxW="md"
+              mt={8}
             >
-              Explorar Experiencias
-            </Button>
+              <VStack spacing={4}>
+                <Text color="gray.700" fontWeight="bold">
+                  ¿Tienes un código de regalo?
+                </Text>
+                <InputGroup size="lg">
+                  <Input
+                    placeholder="Ingresa tu código"
+                    value={giftCode}
+                    onChange={(e) => setGiftCode(e.target.value.toUpperCase())}
+                    color="gray.700"
+                    bg="gray.50"
+                    maxLength={8}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button 
+                      h="1.75rem" 
+                      size="sm" 
+                      colorScheme="teal"
+                      onClick={handleRedeemCode}
+                    >
+                      Redimir
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </VStack>
+            </Box>
           </VStack>
-        </Box>
+        </Container>
       </Box>
 
       {/* Categories Section */}
@@ -160,7 +196,7 @@ function Home() {
 
       <Container maxW="container.xl" py={8}>
         <VStack spacing={8} align="stretch">
-          <Heading textAlign="center">Experiencias Únicas en Guatemala</Heading>
+          <Heading textAlign="center">Experiencias Disponibles</Heading>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
             {experiences.map((experience) => (
               <Box
@@ -169,6 +205,8 @@ function Home() {
                 borderRadius="lg"
                 overflow="hidden"
                 _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
+                bg="white"
+                boxShadow="sm"
               >
                 <Image
                   src={experience.imageUrl}
@@ -181,33 +219,37 @@ function Home() {
                   <Heading size="md" mb={2}>
                     {experience.title}
                   </Heading>
-                  <Text mb={4}>{experience.description}</Text>
-                  <Text fontWeight="bold" mb={4}>
-                    Q{experience.price}
+                  <Text mb={4} color="gray.600">
+                    {experience.description}
                   </Text>
-                  <Button
-                    colorScheme="teal"
-                    width="100%"
-                    onClick={() => handleBooking(experience)}
-                  >
-                    Reservar
-                  </Button>
+                  <Stack spacing={4}>
+                    <Text fontWeight="bold" fontSize="xl" color="teal.600">
+                      Q{experience.price}
+                    </Text>
+                    <Button
+                      colorScheme="teal"
+                      width="100%"
+                      onClick={() => handleBooking(experience)}
+                    >
+                      Reservar
+                    </Button>
+                  </Stack>
                 </Box>
               </Box>
             ))}
           </SimpleGrid>
         </VStack>
-
-        {selectedExperience && (
-          <BookingModal
-            isOpen={isOpen}
-            onClose={onClose}
-            experience={selectedExperience}
-          />
-        )}
       </Container>
+
+      {selectedExperience && (
+        <BookingModal
+          isOpen={isOpen}
+          onClose={onClose}
+          experience={selectedExperience}
+        />
+      )}
     </Box>
-  )
+  );
 }
 
 export default Home;
