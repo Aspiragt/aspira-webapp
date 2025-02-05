@@ -1,12 +1,14 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Home } from './pages/Home';
+import { Box, Heading, Text } from '@chakra-ui/react';
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
+    <Box p={8} maxW="container.xl" mx="auto">
+      <Heading color="#2C4A3B" mb={4}>Aspira Guatemala</Heading>
+      <Text fontSize="xl" color="#C17F59">
+        Experiencias únicas en Guatemala
+      </Text>
+    </Box>
   );
 };
 
