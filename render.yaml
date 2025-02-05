@@ -28,3 +28,18 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: NODE_ENV
+        value: production
+      - key: VITE_APP_ENV
+        value: production
+      - key: VITE_API_URL
+        value: https://api.aspira.life
+      - key: VITE_SITE_URL
+        value: https://aspira.life
+      - key: VITE_STRIPE_PUBLIC_KEY
+        sync: false
+      - key: VITE_GA_TRACKING_ID
+        sync: false
