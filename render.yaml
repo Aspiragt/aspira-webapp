@@ -3,10 +3,26 @@ services:
   - type: web
     name: aspira-backend
     env: node
-    buildCommand: cd backend && npm install
+    buildCommand: cd backend && npm install && npm run build
     startCommand: cd backend && npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 5001
+      - key: MONGODB_URI
+        sync: false
+      - key: EMAIL_SERVICE
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+
+  - type: web
+    name: aspira-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

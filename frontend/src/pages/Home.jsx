@@ -1,5 +1,17 @@
-import { Box, Container, Heading, Text, SimpleGrid, Image, Button, VStack } from '@chakra-ui/react'
-import { Link as RouterLink } from 'react-router-dom'
+import React, { useState } from 'react';
+import {
+  Box,
+  Container,
+  SimpleGrid,
+  Image,
+  Text,
+  Button,
+  VStack,
+  Heading,
+  useDisclosure
+} from '@chakra-ui/react';
+import BookingModal from '../components/BookingModal';
+import config from '../config';
 
 const categories = [
   {
@@ -65,6 +77,29 @@ function CategoryCard({ category }) {
 }
 
 function Home() {
+  const [experiences, setExperiences] = useState([]);
+  const [selectedExperience, setSelectedExperience] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  React.useEffect(() => {
+    fetchExperiences();
+  }, []);
+
+  const fetchExperiences = async () => {
+    try {
+      const response = await fetch(`${config.apiUrl}/experiences`);
+      const data = await response.json();
+      setExperiences(data);
+    } catch (error) {
+      console.error('Error fetching experiences:', error);
+    }
+  };
+
+  const handleBooking = (experience) => {
+    setSelectedExperience(experience);
+    onOpen();
+  };
+
   return (
     <Box>
       {/* Hero Section */}
@@ -122,8 +157,57 @@ function Home() {
           </SimpleGrid>
         </VStack>
       </Container>
+
+      <Container maxW="container.xl" py={8}>
+        <VStack spacing={8} align="stretch">
+          <Heading textAlign="center">Experiencias Únicas en Guatemala</Heading>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+            {experiences.map((experience) => (
+              <Box
+                key={experience._id}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
+              >
+                <Image
+                  src={experience.imageUrl}
+                  alt={experience.title}
+                  height="200px"
+                  width="100%"
+                  objectFit="cover"
+                />
+                <Box p={6}>
+                  <Heading size="md" mb={2}>
+                    {experience.title}
+                  </Heading>
+                  <Text mb={4}>{experience.description}</Text>
+                  <Text fontWeight="bold" mb={4}>
+                    Q{experience.price}
+                  </Text>
+                  <Button
+                    colorScheme="teal"
+                    width="100%"
+                    onClick={() => handleBooking(experience)}
+                  >
+                    Reservar
+                  </Button>
+                </Box>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </VStack>
+
+        {selectedExperience && (
+          <BookingModal
+            isOpen={isOpen}
+            onClose={onClose}
+            experience={selectedExperience}
+          />
+        )}
+      </Container>
     </Box>
   )
 }
 
-export default Home
+export default Home;
