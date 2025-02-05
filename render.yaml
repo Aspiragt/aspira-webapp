@@ -1,6 +1,7 @@
 services:
-  - type: static
+  - type: web
     name: aspira-webapp
+    env: static
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
