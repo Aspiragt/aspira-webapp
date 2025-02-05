@@ -12,10 +12,10 @@ services:
         value: 5001
 
   # Frontend static site
-  - type: static
+  - type: static-site
     name: aspira-frontend
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
+    publishDir: frontend/dist
     headers:
       - path: /*
         name: Cache-Control
