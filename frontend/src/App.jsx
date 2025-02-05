@@ -1,12 +1,12 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Box } from '@chakra-ui/react';
 import { Home } from './pages/Home';
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
+    <Box minH="100vh">
+      <Home />
+    </Box>
   );
 };
 
