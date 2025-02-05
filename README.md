@@ -13,6 +13,8 @@ ASPIRA es una plataforma digital para descubrir, personalizar y regalar experien
   - Exploración por categorías
   - Filtros por ubicación y precio
   - Visualización detallada de cada experiencia
+  - Diseño moderno y responsivo
+  - Animaciones y transiciones suaves
 
 - **Proceso de Reserva**
   - Selección de fecha y número de participantes
@@ -29,10 +31,29 @@ ASPIRA es una plataforma digital para descubrir, personalizar y regalar experien
 - Express Validator
 
 ### Frontend
-- React
+- React 18
+- Vite
+- Styled Components
+- React Router DOM
 - Chakra UI
-- React Router
-- Axios
+- Framer Motion
+- React Icons
+
+## Diseño y UI/UX
+
+### Componentes Principales
+- **Hero Section**: Banner principal con video/imagen de fondo y llamado a la acción
+- **How It Works**: Sección explicativa del proceso en 3 pasos
+- **Featured Experiences**: Grid de experiencias destacadas
+- **Testimonials**: Testimonios de usuarios con diseño moderno
+- **Footer**: Pie de página con información de contacto y enlaces importantes
+
+### Sistema de Diseño
+- Paleta de colores cuidadosamente seleccionada
+- Tipografía moderna y legible
+- Componentes reutilizables
+- Diseño responsivo mobile-first
+- Microinteracciones y animaciones sutiles
 
 ## Requisitos Previos
 
@@ -61,108 +82,54 @@ npm install
 \`\`\`
 
 4. Configurar variables de entorno:
-   - Copiar el archivo `.env.example` a `.env` en la carpeta backend
-   - Ajustar las variables según sea necesario
+   - Crear archivo `.env` en la carpeta backend
+   - Crear archivo `.env` en la carpeta frontend
 
-5. Iniciar MongoDB:
-\`\`\`bash
-mongod
-\`\`\`
+5. Iniciar el servidor de desarrollo:
 
-6. Iniciar el servidor backend:
+Backend:
 \`\`\`bash
 cd backend
 npm run dev
 \`\`\`
 
-7. Iniciar el frontend:
+Frontend:
 \`\`\`bash
 cd frontend
 npm run dev
 \`\`\`
 
-## Deployment en Render.com
-
-### Pasos para el Deployment
-
-1. Crear una cuenta en [Render.com](https://render.com)
-
-2. Conectar con GitHub:
-   - Ve a tu dashboard en Render
-   - Haz clic en "New +"
-   - Selecciona "Blueprint"
-   - Conecta tu repositorio de GitHub
-
-3. Configurar el Deployment:
-   - Render detectará automáticamente el archivo `render.yaml`
-   - Creará dos servicios:
-     - Backend (Web Service)
-     - Frontend (Static Site)
-
-4. Variables de Entorno:
-   - NODE_ENV: production
-   - PORT: 5001
-
-5. Conectar Dominio:
-   - En GoDaddy:
-     1. Ve a DNS Management
-     2. Añade un registro CNAME:
-        - Type: CNAME
-        - Host: www
-        - Points to: [tu-app].onrender.com
-        - TTL: 1 Hour
-     3. Añade un registro A:
-        - Type: A
-        - Host: @
-        - Points to: 76.76.21.21
-        - TTL: 1 Hour
-
-### Desarrollo Local
-
-```bash
-# Instalar dependencias
-cd frontend && npm install
-cd backend && npm install
-
-# Iniciar en desarrollo
-# Terminal 1
-cd frontend && npm run dev
-
-# Terminal 2
-cd backend && npm run dev
-```
-
-La aplicación estará disponible en:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:5001
-
-## Estructura del Proyecto
+## Estructura del Proyecto Frontend
 
 \`\`\`
-aspira-webapp/
-├── backend/
-│   ├── src/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── server.js
-│   ├── package.json
-│   └── .env
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   ├── pages/
-    │   └── App.jsx
-    └── package.json
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── common/         # Componentes reutilizables
+│   │   │   ├── Button.js
+│   │   │   ├── ExperienceCard.js
+│   │   │   └── Footer.js
+│   │   └── home/          # Componentes específicos de la página principal
+│   │       ├── Hero.js
+│   │       ├── HowItWorks.js
+│   │       ├── FeaturedExperiences.js
+│   │       └── Testimonials.js
+│   ├── styles/
+│   │   ├── theme.js       # Configuración del tema
+│   │   └── GlobalStyles.js # Estilos globales
+│   └── App.js             # Componente principal
+├── public/                # Archivos estáticos
+└── package.json
 \`\`\`
 
 ## Contribución
 
-1. Fork el proyecto
-2. Crear una rama para tu feature (\`git checkout -b feature/AmazingFeature\`)
+1. Fork el repositorio
+2. Crea una rama para tu feature (\`git checkout -b feature/AmazingFeature\`)
 3. Commit tus cambios (\`git commit -m 'Add some AmazingFeature'\`)
 4. Push a la rama (\`git push origin feature/AmazingFeature\`)
-5. Abrir un Pull Request
+5. Abre un Pull Request
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
