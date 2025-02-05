@@ -1,82 +1,56 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import Container from '../layout/Container';
+import { Box, Container, Heading, Text, Button, Stack } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
-const HeroSection = styled.section`
-  position: relative;
-  height: 80vh;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.white};
-  background-image: linear-gradient(
-    to bottom,
-    rgba(44, 74, 59, 0.8),
-    rgba(44, 74, 59, 0.9)
-  ), url('https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg');
-  background-size: cover;
-  background-position: center;
-`;
-
-const Content = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.lg};
-`;
-
-const Title = styled.h1`
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  line-height: 1.2;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const Subtitle = styled.p`
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  line-height: 1.6;
-  opacity: 0.9;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const CTAButton = styled(Link)`
-  display: inline-block;
-  background: ${({ theme }) => theme.colors.terra};
-  color: ${({ theme }) => theme.colors.white};
-  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.forest};
-    transform: translateY(-2px);
-  }
-`;
-
-const Hero = () => {
+export const Hero = () => {
   return (
-    <HeroSection>
-      <Container>
-        <Content>
-          <Title>
-            Descubre Guatemala<br />de una manera única
-          </Title>
-          <Subtitle>
-            Experiencias auténticas que conectan con la naturaleza y cultura de nuestro país
-          </Subtitle>
-          <CTAButton to="/experiences">
-            Explorar Experiencias
-          </CTAButton>
-        </Content>
+    <Box
+      as="section"
+      bgImage="url('/images/hero/hero-bg.jpg')"
+      bgPosition="center"
+      bgSize="cover"
+      py={32}
+      position="relative"
+      _before={{
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        bg: 'rgba(44, 74, 59, 0.7)', // Verde Bosque con transparencia
+      }}
+    >
+      <Container maxW="container.xl" position="relative" zIndex={1}>
+        <Stack spacing={6} maxW="2xl" color="white">
+          <Heading as="h1" size="2xl">
+            Descubre Guatemala a través de experiencias auténticas
+          </Heading>
+          <Text fontSize="xl">
+            Conectamos viajeros con experiencias únicas y sostenibles que celebran la cultura y naturaleza de Guatemala
+          </Text>
+          <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+            <Button
+              as={RouterLink}
+              to="/experiences"
+              size="lg"
+              bg="#C17F59" // Terracota
+              _hover={{ bg: '#A66D4F' }}
+            >
+              Explorar Experiencias
+            </Button>
+            <Button
+              as={RouterLink}
+              to="/about"
+              size="lg"
+              variant="outline"
+              _hover={{ bg: 'whiteAlpha.200' }}
+            >
+              Conoce más
+            </Button>
+          </Stack>
+        </Stack>
       </Container>
-    </HeroSection>
+    </Box>
   );
 };
-
-export default Hero;
