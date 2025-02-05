@@ -20,8 +20,9 @@ services:
   - type: web
     name: aspira-webapp
     env: static
-    buildCommand: npm install --prefix frontend && npm run build --prefix frontend
-    staticPublishPath: frontend/dist
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
     domains:
       - aspira.life
     routes:
