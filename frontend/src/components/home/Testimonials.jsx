@@ -1,142 +1,91 @@
 import React from 'react';
-import styled from 'styled-components';
-import { theme } from '../../styles/theme';
-import Container from '../layout/Container';
+import { Box, Container, Heading, Text, SimpleGrid, Avatar, VStack, Icon, useColorModeValue } from '@chakra-ui/react';
+import { FaQuoteLeft } from 'react-icons/fa';
 
-const Section = styled.section`
-  padding: 5rem 0;
-  background-color: ${theme.colors.base.secondary};
-`;
-
-const Title = styled.h2`
-  font-family: ${theme.typography.fontFamily.display};
-  font-size: ${theme.typography.fontSize.xxl};
-  color: ${theme.colors.content.primary};
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-`;
-
-const TestimonialCard = styled.div`
-  background-color: ${theme.colors.base.primary};
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: ${theme.shadows.sm};
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${theme.shadows.md};
+const testimonials = [
+  {
+    name: 'Ana García',
+    location: 'Ciudad de Guatemala',
+    image: '/images/testimonials/ana.jpg',
+    text: 'Mi experiencia en el Volcán Acatenango fue increíble. Los guías fueron muy profesionales y la vista del Volcán de Fuego fue espectacular.'
+  },
+  {
+    name: 'Carlos Mendoza',
+    location: 'Antigua Guatemala',
+    image: '/images/testimonials/carlos.jpg',
+    text: 'El taller de chocolate fue una experiencia única. Aprendí mucho sobre la historia del cacao en Guatemala y las técnicas tradicionales.'
+  },
+  {
+    name: 'María José',
+    location: 'Quetzaltenango',
+    image: '/images/testimonials/maria.jpg',
+    text: 'El kayak en el Lago de Atitlán superó todas mis expectativas. El equipo fue excelente y las vistas simplemente increíbles.'
   }
-`;
-
-const Quote = styled.blockquote`
-  color: ${theme.colors.content.primary};
-  font-size: ${theme.typography.fontSize.lg};
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
-  position: relative;
-
-  &::before {
-    content: '"';
-    font-family: ${theme.typography.fontFamily.display};
-    font-size: 4rem;
-    color: ${theme.colors.accent.primary};
-    position: absolute;
-    top: -1rem;
-    left: -1rem;
-    opacity: 0.2;
-  }
-`;
-
-const Author = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const Avatar = styled.img`
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const AuthorInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Name = styled.span`
-  color: ${theme.colors.content.primary};
-  font-weight: 600;
-`;
-
-const Role = styled.span`
-  color: ${theme.colors.content.secondary};
-  font-size: ${theme.typography.fontSize.sm};
-`;
-
-const Rating = styled.div`
-  color: ${theme.colors.accent.primary};
-  font-size: ${theme.typography.fontSize.lg};
-  margin-bottom: 1rem;
-`;
+];
 
 export const Testimonials = () => {
-  const testimonials = [
-    {
-      quote: 'Una experiencia increíble. El equipo de Aspira hizo que todo fuera perfecto desde el inicio hasta el final.',
-      author: 'María González',
-      role: 'Aventurera',
-      avatar: '/images/testimonials/maria.jpg',
-      rating: 5
-    },
-    {
-      quote: 'La mejor manera de descubrir Guatemala. Las experiencias son únicas y el servicio es excelente.',
-      author: 'Carlos Ramírez',
-      role: 'Fotógrafo',
-      avatar: '/images/testimonials/carlos.jpg',
-      rating: 5
-    },
-    {
-      quote: 'Regalé una experiencia a mi pareja y fue el mejor regalo que pude haber elegido. ¡Momentos inolvidables!',
-      author: 'Ana Morales',
-      role: 'Emprendedora',
-      avatar: '/images/testimonials/ana.jpg',
-      rating: 5
-    }
-  ];
-
-  const renderStars = (rating) => {
-    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
-  };
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
 
   return (
-    <Section>
-      <Container>
-        <Title>Lo que dicen nuestros clientes</Title>
-        <Grid>
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={index}>
-              <Rating>{renderStars(testimonial.rating)}</Rating>
-              <Quote>{testimonial.quote}</Quote>
-              <Author>
-                <Avatar src={testimonial.avatar} alt={testimonial.author} />
-                <AuthorInfo>
-                  <Name>{testimonial.author}</Name>
-                  <Role>{testimonial.role}</Role>
-                </AuthorInfo>
-              </Author>
-            </TestimonialCard>
-          ))}
-        </Grid>
+    <Box as="section" py={20} bg={bgColor}>
+      <Container maxW="container.xl">
+        <VStack spacing={12}>
+          <VStack spacing={4} textAlign="center">
+            <Heading as="h2" size="xl" color="brand.forest">
+              Lo que dicen nuestros viajeros
+            </Heading>
+            <Text fontSize="lg" color="gray.600" maxW="2xl">
+              Experiencias auténticas compartidas por nuestra comunidad
+            </Text>
+          </VStack>
+
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+            {testimonials.map((testimonial, index) => (
+              <VStack
+                key={index}
+                spacing={6}
+                p={8}
+                bg="white"
+                borderRadius="lg"
+                boxShadow="md"
+                position="relative"
+                _hover={{
+                  transform: 'translateY(-4px)',
+                  boxShadow: 'lg',
+                  transition: 'all 0.2s ease-in-out'
+                }}
+              >
+                <Icon
+                  as={FaQuoteLeft}
+                  position="absolute"
+                  top={4}
+                  left={4}
+                  color="brand.terra"
+                  opacity={0.2}
+                  boxSize={8}
+                />
+                <Avatar
+                  size="xl"
+                  name={testimonial.name}
+                  src={testimonial.image}
+                  mb={2}
+                />
+                <VStack spacing={2}>
+                  <Heading as="h3" size="md" color="brand.forest">
+                    {testimonial.name}
+                  </Heading>
+                  <Text fontSize="sm" color="gray.500">
+                    {testimonial.location}
+                  </Text>
+                </VStack>
+                <Text textAlign="center" color="gray.600" fontSize="md">
+                  "{testimonial.text}"
+                </Text>
+              </VStack>
+            ))}
+          </SimpleGrid>
+        </VStack>
       </Container>
-    </Section>
+    </Box>
   );
 };

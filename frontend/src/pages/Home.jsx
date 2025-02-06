@@ -1,7 +1,9 @@
-import { Box } from "@chakra-ui/react";
-import { HowItWorks } from "../components/home/HowItWorks";
-import { FeaturedExperiences } from "../components/home/FeaturedExperiences";
-import { Hero } from "../components/home/Hero";
+import React from 'react';
+import { Box } from '@chakra-ui/react';
+import { Hero } from '../components/home/Hero';
+import { HowItWorks } from '../components/home/HowItWorks';
+import { FeaturedExperiences } from '../components/home/FeaturedExperiences';
+import { Testimonials } from '../components/home/Testimonials';
 
 export const Home = () => {
   return (
@@ -9,6 +11,7 @@ export const Home = () => {
       <Hero />
       <HowItWorks />
       <FeaturedExperiences />
+      <Testimonials />
     </Box>
   );
 };
