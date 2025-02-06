@@ -27,7 +27,7 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-import { ExperienceForm } from '../components/admin/ExperienceForm';
+import ExperienceForm from '../components/admin/ExperienceForm';
 
 // Esta contraseña debería estar en un .env file
 const ADMIN_PASSWORD = 'aspira2025';
