@@ -10,7 +10,7 @@ import { Experiences } from './pages/Experiences';
 import { ExperienceDetail } from './pages/ExperienceDetail';
 import { About } from './pages/About';
 import { HowItWorks } from './pages/HowItWorks';
-import { Redeem } from './pages/Redeem';
+import Redeem from './pages/Redeem';
 import { Admin } from './pages/Admin';
 import NotFound from './pages/NotFound';
 
