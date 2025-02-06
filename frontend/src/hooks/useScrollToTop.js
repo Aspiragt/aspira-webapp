@@ -1,14 +1,36 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export const useScrollToTop = () => {
+const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style;
+
+export const useScrollToTop = (options = { smooth: true }) => {
   const { pathname } = useLocation();
-  
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [pathname]);
+    try {
+      if (options.smooth && isSmoothScrollSupported) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    } catch (error) {
+      // Fallback si algo falla
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, options.smooth]);
 };
 
 export const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  try {
+    if (isSmoothScrollSupported) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  } catch (error) {
+    window.scrollTo(0, 0);
+  }
 };
