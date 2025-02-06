@@ -1,78 +1,89 @@
 import React from 'react';
-import { Box, Image, Heading, Text, VStack, HStack, Badge, Icon } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Box, Image, Heading, Text, VStack, HStack, Icon, Button } from '@chakra-ui/react';
 import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
-import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
+import { Link as RouterLink } from 'react-router-dom';
 
-export const ExperienceCard = ({ id, title, description, image, price, location, duration }) => {
+const MotionBox = motion(Box);
+
+export const ExperienceCard = ({ title, description, image, price, location, duration }) => {
+  const slug = title.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  
   return (
-    <Box
+    <MotionBox
       as={RouterLink}
-      to={`/experiences/${id}`}
-      bg="white"
+      to={`/experiences/${slug}`}
       borderRadius="lg"
       overflow="hidden"
-      transition="transform 0.3s ease, box-shadow 0.3s ease"
-      _hover={{
-        transform: 'translateY(-4px)',
-        boxShadow: 'lg',
-        textDecoration: 'none'
-      }}
-      height="100%"
-      display="block"
+      bg="white"
+      shadow="md"
+      _hover={{ textDecoration: 'none' }}
+      whileHover={{ y: -5 }}
+      transition="0.2s ease"
     >
       <Box position="relative">
         <Image
           src={image}
           alt={title}
+          w="100%"
+          h="250px"
           objectFit="cover"
-          height="250px"
-          width="100%"
+          transition="0.3s ease"
+          _groupHover={{ transform: 'scale(1.05)' }}
         />
-        <Badge
+        <Box
           position="absolute"
-          top={4}
-          right={4}
-          colorScheme="green"
-          fontSize="md"
-          py={1}
-          px={2}
-        >
-          Q{price}
-        </Badge>
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="blackAlpha.300"
+          transition="0.3s ease"
+          _groupHover={{ bg: 'blackAlpha.400' }}
+        />
       </Box>
-      <VStack p={6} align="start" spacing={3}>
-        <Heading as="h3" size="md" color="brand.forest">
-          {title}
-        </Heading>
-        <Text color="gray.600" noOfLines={2}>
-          {description}
-        </Text>
-        <HStack spacing={4} color="gray.500">
-          {location && (
-            <HStack spacing={1}>
+
+      <VStack p={6} spacing={4} align="stretch">
+        <VStack align="start" spacing={2}>
+          <Heading size="md" color="brand.forest">
+            {title}
+          </Heading>
+          <Text noOfLines={2} color="gray.600">
+            {description}
+          </Text>
+        </VStack>
+
+        <VStack spacing={2}>
+          <HStack spacing={4} w="100%">
+            <HStack>
               <Icon as={FaMapMarkerAlt} color="brand.terra" />
-              <Text fontSize="sm">{location}</Text>
+              <Text fontSize="sm" color="gray.600">
+                {location}
+              </Text>
             </HStack>
-          )}
-          {duration && (
-            <HStack spacing={1}>
+            <HStack>
               <Icon as={FaClock} color="brand.terra" />
-              <Text fontSize="sm">{duration}</Text>
+              <Text fontSize="sm" color="gray.600">
+                {duration}
+              </Text>
             </HStack>
-          )}
+          </HStack>
+        </VStack>
+
+        <HStack justify="space-between" align="center">
+          <Text fontWeight="bold" fontSize="xl" color="brand.terra">
+            Q{price}
+          </Text>
+          <Button
+            size="sm"
+            bg="brand.terra"
+            color="white"
+            _hover={{ bg: 'brand.forest' }}
+          >
+            Ver más
+          </Button>
         </HStack>
       </VStack>
-    </Box>
+    </MotionBox>
   );
-};
-
-ExperienceCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  location: PropTypes.string,
-  duration: PropTypes.string
 };

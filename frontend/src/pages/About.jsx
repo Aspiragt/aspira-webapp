@@ -1,302 +1,257 @@
 import React from 'react';
-import styled from 'styled-components';
-import Container from '../components/layout/Container';
+import {
+  Box,
+  Container,
+  Heading,
+  Text,
+  SimpleGrid,
+  VStack,
+  HStack,
+  Icon,
+  Image,
+  Button,
+  Divider,
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import {
+  FaHeart,
+  FaHandshake,
+  FaGem,
+  FaGlobeAmericas,
+  FaGift,
+  FaStar,
+} from 'react-icons/fa';
 
-const Section = styled.section`
-  margin-top: 80px;
-`;
-
-const Hero = styled.div`
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${({ theme }) => theme.colors.forest};
-  color: ${({ theme }) => theme.colors.white};
-  padding: ${({ theme }) => theme.spacing.xxxl} ${({ theme }) => theme.spacing.xl};
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('/images/hero-pattern.svg') repeat;
-    opacity: 0.1;
-    animation: moveBackground 60s linear infinite;
-  }
-
-  @keyframes moveBackground {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-`;
-
-const HeroContent = styled.div`
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  max-width: 900px;
-`;
-
-const Title = styled.h1`
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  line-height: 1.2;
-  margin-bottom: ${({ theme }) => theme.spacing.xxl};
-  position: relative;
-  padding-bottom: ${({ theme }) => theme.spacing.xl};
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background: ${({ theme }) => theme.colors.terra};
-  }
-`;
-
-const Subtitle = styled.p`
-  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-  line-height: 1.6;
-  opacity: 0.9;
-  max-width: 700px;
-  margin: 0 auto;
-`;
-
-const ContentSection = styled.div`
-  padding: ${({ theme }) => theme.spacing.xxxl} 0;
-  background: ${props => props.$alternate ? props.theme.colors.sand : props.theme.colors.white};
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(
-      to right,
-      ${({ theme }) => theme.colors.terra}20,
-      ${({ theme }) => theme.colors.terra},
-      ${({ theme }) => theme.colors.terra}20
-    );
-  }
-`;
-
-const SectionContent = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 ${({ theme }) => theme.spacing.xl};
-  text-align: center;
-`;
-
-const SectionTitle = styled.h2`
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  font-size: clamp(2rem, 4vw, 3rem);
-  color: ${({ theme }) => theme.colors.forest};
-  margin-bottom: ${({ theme }) => theme.spacing.xxl};
-  position: relative;
-  padding-bottom: ${({ theme }) => theme.spacing.lg};
-  text-align: center;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: ${({ theme }) => theme.colors.terra};
-  }
-`;
-
-const SectionText = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  line-height: 1.8;
-  color: ${({ theme }) => theme.colors.forest};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  opacity: 0.9;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const ValuesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${({ theme }) => theme.spacing.xxl};
-  margin-top: ${({ theme }) => theme.spacing.xxxl};
-  padding: 0 ${({ theme }) => theme.spacing.xl};
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const ValueCard = styled.div`
-  background: ${({ theme }) => theme.colors.white};
-  padding: ${({ theme }) => theme.spacing.xxl};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  text-align: center;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: ${({ theme }) => theme.colors.terra};
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  &:hover::before {
-    transform: scaleX(1);
-  }
-`;
-
-const ValueIcon = styled.div`
-  width: 64px;
-  height: 64px;
-  margin: 0 auto ${({ theme }) => theme.spacing.xl};
-
-  svg {
-    width: 100%;
-    height: 100%;
-    fill: ${({ theme }) => theme.colors.terra};
-  }
-`;
-
-const ValueTitle = styled.h3`
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  font-size: ${({ theme }) => theme.typography.fontSize.xl};
-  color: ${({ theme }) => theme.colors.forest};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-`;
-
-const ValueDescription = styled.p`
-  color: ${({ theme }) => theme.colors.forest};
-  line-height: 1.6;
-  font-size: ${({ theme }) => theme.typography.fontSize.md};
-`;
+const MotionBox = motion(Box);
 
 const values = [
   {
-    title: 'Autenticidad',
-    description: 'Creemos en experiencias genuinas que reflejen la verdadera esencia de Guatemala y su gente.',
-    icon: (
-      <svg viewBox="0 0 24 24">
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-      </svg>
-    )
+    icon: FaGem,
+    title: 'Excelencia en Cada Detalle',
+    description: 'Curamos meticulosamente cada experiencia para garantizar momentos extraordinarios. Solo lo mejor llega a nuestra plataforma.',
   },
   {
-    title: 'Comunidad',
-    description: 'Conectamos viajeros con comunidades locales para crear un impacto positivo y duradero.',
-    icon: (
-      <svg viewBox="0 0 24 24">
-        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-      </svg>
-    )
+    icon: FaHandshake,
+    title: 'Alianzas de Calidad',
+    description: 'Colaboramos con anfitriones expertos y proveedores de élite que comparten nuestra pasión por la excelencia.',
   },
   {
-    title: 'Sostenibilidad',
-    description: 'Promovemos un turismo responsable que preserve y celebre el patrimonio natural y cultural de Guatemala.',
-    icon: (
-      <svg viewBox="0 0 24 24">
-        <path d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zM5.6 10.25c0 1.38 1.12 2.5 2.5 2.5.53 0 1.01-.16 1.42-.44l-.02.19c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5l-.02-.19c.4.28.89.44 1.42.44 1.38 0 2.5-1.12 2.5-2.5 0-1-.59-1.85-1.43-2.25.84-.4 1.43-1.25 1.43-2.25 0-1.38-1.12-2.5-2.5-2.5-.53 0-1.01.16-1.42.44l.02-.19C14.5 2.12 13.38 1 12 1S9.5 2.12 9.5 3.5l.02.19c-.4-.28-.89-.44-1.42-.44-1.38 0-2.5 1.12-2.5 2.5 0 1 .59 1.85 1.43 2.25-.84.4-1.43 1.25-1.43 2.25zM12 5.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8s1.12-2.5 2.5-2.5z"/>
-      </svg>
-    )
-  }
+    icon: FaHeart,
+    title: 'Momentos que Perduran',
+    description: 'Creemos en el poder de las experiencias para crear recuerdos inolvidables que duran toda la vida.',
+  },
+  {
+    icon: FaGift,
+    title: 'El Arte de Regalar',
+    description: 'Facilitamos el regalo perfecto: experiencias únicas que crean historias memorables para contar.',
+  },
+  {
+    icon: FaGlobeAmericas,
+    title: 'Impacto Positivo',
+    description: 'Promovemos experiencias que respetan y celebran nuestras comunidades y entornos naturales.',
+  },
+  {
+    icon: FaStar,
+    title: 'Servicio Excepcional',
+    description: 'Nos dedicamos a hacer que cada interacción, desde la reserva hasta el último momento, sea extraordinaria.',
+  },
+];
+
+const stats = [
+  { number: '1,000+', label: 'Experiencias Regaladas' },
+  { number: '50+', label: 'Anfitriones Expertos' },
+  { number: '4.9/5', label: 'Calificación Promedio' },
+  { number: '98%', label: 'Clientes Satisfechos' },
 ];
 
 export const About = () => {
   return (
-    <Section>
-      <Hero>
-        <HeroContent>
-          <Title>Inspirando aventuras auténticas en Guatemala</Title>
-          <Subtitle>
-            Conectamos viajeros con experiencias únicas que celebran la riqueza
-            cultural y natural de nuestro país.
-          </Subtitle>
-        </HeroContent>
-      </Hero>
-
-      <ContentSection>
-        <Container>
-          <SectionContent>
-            <SectionTitle>Nuestra Historia</SectionTitle>
-            <SectionText>
-              Aspira nació de un sueño compartido: mostrar la verdadera esencia de Guatemala
-              al mundo. Nos dimos cuenta de que los viajeros buscaban más que simples
-              tours turísticos; anhelaban conexiones auténticas, momentos significativos
-              y experiencias que transformaran su manera de ver el mundo.
-            </SectionText>
-            <SectionText>
-              Comenzamos colaborando con comunidades locales, artesanos y guías
-              apasionados que compartían nuestra visión. Juntos, hemos creado una
-              plataforma que no solo ofrece aventuras inolvidables, sino que también
-              contribuye al desarrollo sostenible de las comunidades guatemaltecas.
-            </SectionText>
-          </SectionContent>
+    <Box as="main">
+      {/* Hero Section */}
+      <Box
+        bg="brand.forest"
+        color="white"
+        py={{ base: 20, md: 32 }}
+        position="relative"
+        overflow="hidden"
+      >
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bgImage="url('/images/about-hero.jpg')"
+          bgSize="cover"
+          bgPosition="center"
+          opacity={0.3}
+        />
+        <Container maxW="container.xl" position="relative">
+          <VStack spacing={8} align="center" textAlign="center" maxW="3xl" mx="auto">
+            <Heading
+              as="h1"
+              size="2xl"
+              lineHeight="shorter"
+              fontWeight="bold"
+            >
+              Creamos Momentos Extraordinarios
+            </Heading>
+            <Text fontSize="xl" maxW="2xl">
+              En Aspira, nos dedicamos a curar las experiencias más especiales y transformadoras. 
+              Creemos que los mejores regalos no vienen en cajas, sino en forma de momentos inolvidables.
+            </Text>
+          </VStack>
         </Container>
-      </ContentSection>
+      </Box>
 
-      <ContentSection $alternate>
-        <Container>
-          <SectionTitle>Nuestros Valores</SectionTitle>
-          <ValuesGrid>
-            {values.map((value, index) => (
-              <ValueCard key={index}>
-                <ValueIcon>{value.icon}</ValueIcon>
-                <ValueTitle>{value.title}</ValueTitle>
-                <ValueDescription>{value.description}</ValueDescription>
-              </ValueCard>
+      {/* Our Story */}
+      <Box py={20}>
+        <Container maxW="container.xl">
+          <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={16} alignItems="center">
+            <MotionBox
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <VStack align="start" spacing={6}>
+                <Heading as="h2" size="xl" color="brand.forest">
+                  Nuestra Historia
+                </Heading>
+                <Text fontSize="lg" color="gray.600">
+                  Nacimos de una simple pero poderosa idea: hacer que regalar momentos extraordinarios sea tan fácil como memorable.
+                </Text>
+                <Text fontSize="lg" color="gray.600">
+                  Nos dimos cuenta que las mejores historias de nuestra vida no vienen de las cosas que compramos, 
+                  sino de las experiencias que vivimos y las personas con quienes las compartimos.
+                </Text>
+                <Text fontSize="lg" color="gray.600">
+                  Hoy, nos enorgullece ser la plataforma líder en experiencias curadas, 
+                  conectando a personas extraordinarias con momentos inolvidables.
+                </Text>
+              </VStack>
+            </MotionBox>
+            <MotionBox
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image
+                src="/images/our-story.jpg"
+                alt="Nuestra Historia"
+                borderRadius="xl"
+                objectFit="cover"
+                w="100%"
+                h="500px"
+              />
+            </MotionBox>
+          </SimpleGrid>
+        </Container>
+      </Box>
+
+      {/* Values */}
+      <Box bg="brand.sand" py={20}>
+        <Container maxW="container.xl">
+          <VStack spacing={16}>
+            <VStack spacing={4} textAlign="center">
+              <Heading as="h2" size="xl" color="brand.forest">
+                Nuestros Valores
+              </Heading>
+              <Text fontSize="lg" color="gray.600" maxW="2xl">
+                Estos principios guían cada decisión que tomamos y cada experiencia que curamos
+              </Text>
+            </VStack>
+
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
+              {values.map((value, index) => (
+                <MotionBox
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <VStack
+                    bg="white"
+                    p={8}
+                    borderRadius="lg"
+                    spacing={4}
+                    align="start"
+                    height="100%"
+                    shadow="md"
+                  >
+                    <Icon as={value.icon} boxSize={8} color="brand.terra" />
+                    <Heading as="h3" size="md" color="brand.forest">
+                      {value.title}
+                    </Heading>
+                    <Text color="gray.600">{value.description}</Text>
+                  </VStack>
+                </MotionBox>
+              ))}
+            </SimpleGrid>
+          </VStack>
+        </Container>
+      </Box>
+
+      {/* Stats */}
+      <Box py={20}>
+        <Container maxW="container.xl">
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
+            {stats.map((stat, index) => (
+              <MotionBox
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <VStack
+                  spacing={2}
+                  p={8}
+                  borderRadius="lg"
+                  bg="white"
+                  shadow="md"
+                  textAlign="center"
+                >
+                  <Text
+                    fontSize="4xl"
+                    fontWeight="bold"
+                    color="brand.terra"
+                  >
+                    {stat.number}
+                  </Text>
+                  <Text color="gray.600">{stat.label}</Text>
+                </VStack>
+              </MotionBox>
             ))}
-          </ValuesGrid>
+          </SimpleGrid>
         </Container>
-      </ContentSection>
+      </Box>
 
-      <ContentSection>
-        <Container>
-          <SectionContent>
-            <SectionTitle>Nuestro Propósito</SectionTitle>
-            <SectionText>
-              En Aspira, creemos que cada viaje tiene el poder de transformar vidas.
-              No solo las de nuestros viajeros, sino también las de las comunidades
-              que los reciben. Trabajamos para crear un modelo de turismo que genere
-              un impacto positivo y duradero.
-            </SectionText>
-            <SectionText>
-              Nuestra misión es revelar la Guatemala auténtica: sus tradiciones
-              milenarias, su biodiversidad única, su rica cultura y, sobre todo,
-              la calidez de su gente. Queremos que cada experiencia no solo sea
-              memorable, sino que también contribuya a preservar y celebrar el
-              patrimonio de nuestro país.
-            </SectionText>
-          </SectionContent>
+      {/* CTA */}
+      <Box py={20} bg="brand.forest" color="white">
+        <Container maxW="container.xl">
+          <VStack spacing={8} textAlign="center">
+            <Heading as="h2" size="xl">
+              Sé Parte de Nuestra Historia
+            </Heading>
+            <Text fontSize="lg" maxW="2xl">
+              Únete a nuestra comunidad de personas que eligen regalar momentos extraordinarios. 
+              Cada experiencia es una oportunidad para crear recuerdos inolvidables.
+            </Text>
+            <Button
+              size="lg"
+              bg="brand.terra"
+              color="white"
+              _hover={{ bg: 'brand.forest', transform: 'translateY(-2px)' }}
+              transition="all 0.3s"
+            >
+              Explorar Experiencias
+            </Button>
+          </VStack>
         </Container>
-      </ContentSection>
-    </Section>
+      </Box>
+    </Box>
   );
 };

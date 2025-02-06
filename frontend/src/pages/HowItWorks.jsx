@@ -1,240 +1,285 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Container from '../components/layout/Container';
+import React from 'react';
+import {
+  Box,
+  Container,
+  Heading,
+  Text,
+  SimpleGrid,
+  VStack,
+  HStack,
+  Icon,
+  Button,
+  Image,
+  useBreakpointValue,
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { Link as RouterLink } from 'react-router-dom';
+import { FaGift, FaCalendarAlt, FaStar, FaHeart } from 'react-icons/fa';
 
-const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.xxxl} 0;
-  margin-top: 80px;
-  background: ${({ theme }) => theme.colors.sand};
-  min-height: calc(100vh - 80px);
-  position: relative;
-  overflow: hidden;
-`;
+const MotionBox = motion(Box);
 
-const Title = styled.h1`
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  font-size: ${({ theme }) => theme.typography.fontSize.xxxl};
-  color: ${({ theme }) => theme.colors.forest};
-  text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-`;
-
-const PathSelector = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing.xl};
-  margin-bottom: ${({ theme }) => theme.spacing.xxl};
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-const PathOption = styled.button`
-  background: ${({ theme, $active }) => $active ? theme.colors.terra : theme.colors.white};
-  color: ${({ theme, $active }) => $active ? theme.colors.white : theme.colors.forest};
-  border: 2px solid ${({ theme }) => theme.colors.terra};
-  padding: ${({ theme }) => theme.spacing.lg} ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  font-size: ${({ theme }) => theme.typography.fontSize.lg};
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 300px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.md};
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${({ theme }) => theme.shadows.md};
-  }
-
-  svg {
-    width: 40px;
-    height: 40px;
-    fill: ${({ theme, $active }) => $active ? theme.colors.white : theme.colors.terra};
-  }
-`;
-
-const PathIcon = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
-`;
-
-const JourneyContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-  padding: ${({ theme }) => theme.spacing.xl};
-`;
-
-const Step = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.xl};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: slideIn 0.5s ease forwards;
-  animation-delay: ${props => props.$index * 0.1}s;
-
-  @keyframes slideIn {
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-`;
-
-const StepNumber = styled.div`
-  width: 40px;
-  height: 40px;
-  background: ${({ theme }) => theme.colors.terra};
-  color: ${({ theme }) => theme.colors.white};
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-`;
-
-const StepContent = styled.div`
-  background: ${({ theme }) => theme.colors.white};
-  padding: ${({ theme }) => theme.spacing.lg};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-  flex-grow: 1;
-`;
-
-const StepTitle = styled.h3`
-  font-family: ${({ theme }) => theme.typography.fontFamily.display};
-  color: ${({ theme }) => theme.colors.forest};
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
-`;
-
-const StepDescription = styled.p`
-  color: ${({ theme }) => theme.colors.forest};
-  line-height: 1.6;
-`;
-
-const journeyPaths = {
-  personal: {
-    title: 'Comprar para mí',
-    icon: () => (
-      <svg viewBox="0 0 24 24">
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-      </svg>
-    ),
-    steps: [
-      {
-        title: 'Explora el catálogo',
-        description: 'Descubre experiencias únicas en Guatemala que se ajusten a tus intereses y nivel de aventura.'
-      },
-      {
-        title: 'Selecciona fecha y personas',
-        description: 'Elige el día perfecto y con cuántas personas compartirás esta experiencia.'
-      },
-      {
-        title: 'Realiza tu reserva',
-        description: 'Completa tu reserva de forma segura y recibe la confirmación instantánea.'
-      },
-      {
-        title: 'Prepárate',
-        description: 'Recibe una guía detallada con todo lo que necesitas saber y llevar para tu experiencia.'
-      }
-    ]
+const steps = [
+  {
+    icon: FaGift,
+    title: 'Elige la Experiencia Perfecta',
+    description: 'Explora nuestra colección de experiencias únicas y cuidadosamente seleccionadas.',
+    features: [
+      'Filtros intuitivos por tipo de experiencia',
+      'Detalles completos de cada actividad',
+      'Fotos y reseñas reales',
+    ],
+    image: '/images/how-it-works/choose.jpg',
   },
-  gift: {
-    title: 'Regalar una experiencia',
-    icon: () => (
-      <svg viewBox="0 0 24 24">
-        <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>
-      </svg>
-    ),
-    steps: [
-      {
-        title: 'Elige la experiencia perfecta',
-        description: 'Selecciona una experiencia que sabes que encantará a esa persona especial.'
-      },
-      {
-        title: 'Personaliza el regalo',
-        description: 'Añade un mensaje personal y elige cómo quieres que reciban la sorpresa.'
-      },
-      {
-        title: 'Envía el regalo',
-        description: 'Decide si quieres que reciban la notificación ahora o en una fecha especial.'
-      },
-      {
-        title: 'Ellos eligen la fecha',
-        description: 'La persona que recibe el regalo podrá elegir la fecha que mejor le convenga.'
-      }
-    ]
+  {
+    icon: FaCalendarAlt,
+    title: 'Personaliza el Regalo',
+    description: 'Haz que el regalo sea aún más especial con detalles personalizados.',
+    features: [
+      'Elige la fecha o deja que el destinatario decida',
+      'Añade un mensaje personal',
+      'Selecciona el método de entrega',
+    ],
+    image: '/images/how-it-works/customize.jpg',
   },
-  redeem: {
-    title: 'Recibí un regalo',
-    icon: () => (
-      <svg viewBox="0 0 24 24">
-        <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>
-      </svg>
-    ),
-    steps: [
-      {
-        title: 'Activa tu regalo',
-        description: 'Ingresa el código que recibiste para ver los detalles de tu experiencia.'
-      },
-      {
-        title: 'Explora los detalles',
-        description: 'Conoce todo sobre la experiencia que te han regalado y qué esperar.'
-      },
-      {
-        title: 'Elige tu fecha',
-        description: 'Selecciona el día que mejor te convenga para vivir tu experiencia.'
-      },
-      {
-        title: 'Prepárate para la aventura',
-        description: 'Recibe toda la información necesaria para aprovechar al máximo tu regalo.'
-      }
-    ]
-  }
-};
+  {
+    icon: FaStar,
+    title: 'Entrega Mágica',
+    description: 'Sorprende a alguien especial con una presentación única.',
+    features: [
+      'Tarjeta digital instantánea',
+      'Empaque físico premium opcional',
+      'Código de regalo exclusivo',
+    ],
+    image: '/images/how-it-works/delivery.jpg',
+  },
+  {
+    icon: FaHeart,
+    title: 'Vive la Experiencia',
+    description: 'Disfruta de momentos inolvidables con todo el soporte que necesitas.',
+    features: [
+      'Confirmación inmediata',
+      'Atención personalizada 24/7',
+      'Garantía de satisfacción',
+    ],
+    image: '/images/how-it-works/experience.jpg',
+  },
+];
+
+const features = [
+  {
+    title: 'Flexibilidad Total',
+    description: 'El destinatario tiene 12 meses para reservar y disfrutar su experiencia.',
+  },
+  {
+    title: 'Garantía Aspira',
+    description: 'Si algo no sale como esperabas, te devolvemos el 100% de tu dinero.',
+  },
+  {
+    title: 'Experiencias Verificadas',
+    description: 'Cada experiencia es probada y evaluada por nuestro equipo.',
+  },
+];
 
 export const HowItWorks = () => {
-  const [selectedPath, setSelectedPath] = useState('personal');
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Section>
-      <Container>
-        <Title>¿Cómo quieres empezar?</Title>
-        
-        <PathSelector>
-          {Object.entries(journeyPaths).map(([key, path]) => (
-            <PathOption
-              key={key}
-              $active={selectedPath === key}
-              onClick={() => setSelectedPath(key)}
+    <Box as="main">
+      {/* Hero Section */}
+      <Box
+        bg="brand.forest"
+        color="white"
+        py={{ base: 16, md: 24 }}
+        position="relative"
+        overflow="hidden"
+      >
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bgImage="url('/images/how-it-works/hero-bg.jpg')"
+          bgSize="cover"
+          bgPosition="center"
+          opacity={0.3}
+        />
+        <Container maxW="container.xl" position="relative">
+          <VStack spacing={6} align="center" textAlign="center" maxW="3xl" mx="auto">
+            <Heading
+              as="h1"
+              size="2xl"
+              lineHeight="shorter"
+              fontWeight="bold"
             >
-              <PathIcon>{path.icon()}</PathIcon>
-              {path.title}
-            </PathOption>
-          ))}
-        </PathSelector>
+              Regalar Momentos Extraordinarios Nunca Fue Tan Fácil
+            </Heading>
+            <Text fontSize="xl" maxW="2xl">
+              En Aspira hemos simplificado el arte de regalar experiencias únicas. 
+              Descubre cómo funciona nuestra plataforma y comienza a crear recuerdos inolvidables.
+            </Text>
+            <Button
+              as={RouterLink}
+              to="/experiences"
+              size="lg"
+              bg="brand.terra"
+              color="white"
+              _hover={{ bg: 'brand.forest', transform: 'translateY(-2px)' }}
+              transition="all 0.3s"
+              px={8}
+            >
+              Explorar Experiencias
+            </Button>
+          </VStack>
+        </Container>
+      </Box>
 
-        <JourneyContainer>
-          {journeyPaths[selectedPath].steps.map((step, index) => (
-            <Step key={index} $index={index}>
-              <StepNumber>{(index + 1).toString().padStart(2, '0')}</StepNumber>
-              <StepContent>
-                <StepTitle>{step.title}</StepTitle>
-                <StepDescription>{step.description}</StepDescription>
-              </StepContent>
-            </Step>
-          ))}
-        </JourneyContainer>
-      </Container>
-    </Section>
+      {/* Steps Section */}
+      <Box py={20}>
+        <Container maxW="container.xl">
+          <VStack spacing={16}>
+            {steps.map((step, index) => (
+              <MotionBox
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <SimpleGrid
+                  columns={{ base: 1, lg: 2 }}
+                  spacing={10}
+                  alignItems="center"
+                  direction={index % 2 === 0 ? 'row' : 'row-reverse'}
+                >
+                  <VStack align="start" spacing={6}>
+                    <HStack spacing={4}>
+                      <Box
+                        p={4}
+                        bg="brand.sand"
+                        borderRadius="full"
+                        color="brand.terra"
+                      >
+                        <Icon as={step.icon} boxSize={6} />
+                      </Box>
+                      <Text
+                        color="brand.terra"
+                        fontWeight="bold"
+                        fontSize="lg"
+                      >
+                        Paso {index + 1}
+                      </Text>
+                    </HStack>
+                    <Heading as="h2" size="xl" color="brand.forest">
+                      {step.title}
+                    </Heading>
+                    <Text fontSize="lg" color="gray.600">
+                      {step.description}
+                    </Text>
+                    <VStack align="start" spacing={3}>
+                      {step.features.map((feature, idx) => (
+                        <HStack key={idx} spacing={3}>
+                          <Box
+                            w={2}
+                            h={2}
+                            borderRadius="full"
+                            bg="brand.terra"
+                          />
+                          <Text color="gray.600">{feature}</Text>
+                        </HStack>
+                      ))}
+                    </VStack>
+                  </VStack>
+                  <Box>
+                    <Image
+                      src={step.image}
+                      alt={step.title}
+                      borderRadius="xl"
+                      objectFit="cover"
+                      w="100%"
+                      h="400px"
+                      shadow="xl"
+                    />
+                  </Box>
+                </SimpleGrid>
+              </MotionBox>
+            ))}
+          </VStack>
+        </Container>
+      </Box>
+
+      {/* Features Section */}
+      <Box bg="brand.sand" py={20}>
+        <Container maxW="container.xl">
+          <VStack spacing={16}>
+            <VStack spacing={4} textAlign="center">
+              <Heading as="h2" size="xl" color="brand.forest">
+                La Garantía Aspira
+              </Heading>
+              <Text fontSize="lg" color="gray.600" maxW="2xl">
+                Nos aseguramos de que cada experiencia sea perfecta, desde el momento 
+                de la compra hasta el último instante de la aventura
+              </Text>
+            </VStack>
+
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+              {features.map((feature, index) => (
+                <MotionBox
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <VStack
+                    bg="white"
+                    p={8}
+                    borderRadius="lg"
+                    spacing={4}
+                    height="100%"
+                    shadow="md"
+                    _hover={{ transform: 'translateY(-4px)', shadow: 'lg' }}
+                    transition="all 0.3s"
+                  >
+                    <Heading as="h3" size="md" color="brand.forest">
+                      {feature.title}
+                    </Heading>
+                    <Text color="gray.600" textAlign="center">
+                      {feature.description}
+                    </Text>
+                  </VStack>
+                </MotionBox>
+              ))}
+            </SimpleGrid>
+          </VStack>
+        </Container>
+      </Box>
+
+      {/* CTA Section */}
+      <Box py={20}>
+        <Container maxW="container.xl">
+          <VStack spacing={8} textAlign="center">
+            <Heading as="h2" size="xl" color="brand.forest">
+              ¿Listo para Regalar Algo Extraordinario?
+            </Heading>
+            <Text fontSize="lg" color="gray.600" maxW="2xl">
+              Únete a miles de personas que ya han regalado momentos inolvidables con Aspira
+            </Text>
+            <Button
+              as={RouterLink}
+              to="/experiences"
+              size="lg"
+              bg="brand.terra"
+              color="white"
+              _hover={{ bg: 'brand.forest', transform: 'translateY(-2px)' }}
+              transition="all 0.3s"
+              px={8}
+            >
+              Comenzar Ahora
+            </Button>
+          </VStack>
+        </Container>
+      </Box>
+    </Box>
   );
 };

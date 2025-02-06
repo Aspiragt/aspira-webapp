@@ -6,20 +6,20 @@ import App from './App'
 import './index.css';
 
 const theme = extendTheme({
+  colors: {
+    brand: {
+      forest: '#2C4A3B',  // Verde Bosque - Color principal
+      sand: '#E8E4D9',    // Beige Arena - Color base/fondo
+      terra: '#C17F59',   // Terracota - Color de acento/CTA
+      white: '#FFFFFF'
+    }
+  },
   styles: {
     global: {
       body: {
-        bg: '#E8E4D9',
-        color: '#2C4A3B'
+        bg: 'brand.sand',
+        color: 'brand.forest'
       }
-    }
-  },
-  colors: {
-    brand: {
-      forest: '#2C4A3B',
-      sand: '#E8E4D9',
-      terra: '#C17F59',
-      white: '#FFFFFF'
     }
   }
 })
