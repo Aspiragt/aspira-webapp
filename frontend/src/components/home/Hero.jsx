@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Container, Heading, Text, Button, Stack } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
 
 export const Hero = () => {
   return (
@@ -18,7 +17,7 @@ export const Hero = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        bg: 'rgba(44, 74, 59, 0.7)', // Verde Bosque con transparencia
+        bg: 'rgba(44, 74, 59, 0.7)',
       }}
     >
       <Container maxW="container.xl" position="relative" zIndex={1}>
@@ -31,20 +30,18 @@ export const Hero = () => {
           </Text>
           <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
             <Button
-              as={RouterLink}
-              to="/experiences"
               size="lg"
-              bg="#C17F59" // Terracota
+              bg="#C17F59" 
               _hover={{ bg: '#A66D4F' }}
+              onClick={() => {}}
             >
               Explorar Experiencias
             </Button>
             <Button
-              as={RouterLink}
-              to="/about"
               size="lg"
               variant="outline"
               _hover={{ bg: 'whiteAlpha.200' }}
+              onClick={() => {}}
             >
               Conoce más
             </Button>
